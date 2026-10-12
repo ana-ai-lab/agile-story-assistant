@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Story & Acceptance Criteria Assistant — PRD</title>
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --panel: #ffffff;
+        --line: #dfe7f2;
+        --text: #1c2430;
+        --muted: #57657a;
+        --accent: #1f6feb;
+        --accent-soft: #eaf2ff;
+        --success: #1d8f63;
+        --warning: #b86d09;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+      .wrap {
+        max-width: 1100px;
+        margin: 32px auto;
+        padding: 0 18px 48px;
+      }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        box-shadow: 0 12px 30px rgba(29, 40, 57, 0.05);
+        padding: 28px;
+      }
+      h1, h2, h3 { margin-top: 0; }
+      h1 { font-size: 2rem; margin-bottom: 8px; }
+      .subtitle {
+        color: var(--muted);
+        font-size: 0.98rem;
+        margin-bottom: 20px;
+      }
+      .diagram {
+        background: var(--accent-soft);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        margin: 18px 0 24px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        background: #fff;
+      }
+      .card h3 {
+        margin-bottom: 12px;
+        font-size: 1.05rem;
+      }
+      ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+      li + li { margin-top: 8px; }
+      .meta {
+        display: inline-block;
+        background: #edf4ff;
+        border: 1px solid #d6e4ff;
+        border-radius: 999px;
+        color: var(--accent);
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 14px;
+      }
+      details {
+        background: #fafcfe;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        margin-top: 12px;
+        padding: 10px 12px;
+      }
+      details summary {
+        cursor: pointer;
+        font-weight: 600;
+      }
+      code {
+        background: #f2f5fa;
+        border-radius: 6px;
+        padding: 2px 6px;
+      }
+      @media (max-width: 640px) {
+        .panel { padding: 18px; }
+        h1 { font-size: 1.6rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="panel">
+        <div class="meta">PRD review</div>
+        <h1>User Story & Acceptance Criteria Assistant</h1>
+        <div class="subtitle">
+          A lightweight agile assistant that turns informal business requests into a backlog-ready story, measurable Gherkin acceptance criteria, and a clear dependency/open-question list for refinement.
+        </div>
+
+        <div class="diagram">
+          <pre class="mermaid">
+flowchart LR
+    A[Raw business request] --> B[Input screen]
+    B --> C[Generate]
+    C --> D[User story]
+    C --> E[Gherkin criteria]
+    C --> F[Dependencies / open questions]
+    D --> G[Copy Markdown]
+    E --> G
+    F --> G
+          </pre>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <h3>Core journey</h3>
+            <ul>
+              <li>Open the app and paste a request.</li>
+              <li>Choose a role if useful.</li>
+              <li>Generate the structured artifact.</li>
+              <li>Review output and copy it to a backlog tool.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>What the user sees</h3>
+            <ul>
+              <li>One input surface for the raw requirement.</li>
+              <li>One output card with story, criteria, and questions.</li>
+              <li>Visible copy action for Markdown.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Proof of success</h3>
+            <ul>
+              <li>A vague request becomes a structured story.</li>
+              <li>Acceptance criteria are testable in Gherkin.</li>
+              <li>Hidden dependencies and missing facts are surfaced.</li>
+            </ul>
+          </div>
+        </div>
+
+        <details open>
+          <summary>Scope said: “turn raw requests into structured backlog artifacts”</summary>
+          <p>Now the behavior is explicit: the app accepts freeform text, produces a user story, creates Gherkin acceptance criteria, and highlights technical dependencies or unanswered questions before the team estimates or refines the work.</p>
+        </details>
+
+        <details>
+          <summary>What if the request is vague or incomplete?</summary>
+          <p>The app should still produce a best-effort result, but it must clearly label missing information and unresolved assumptions instead of pretending the requirement is fully ready.</p>
+        </details>
+
+        <details>
+          <summary>What stays out of scope for now?</summary>
+          <p>Authentication, persistence, direct Jira/Azure DevOps integration, multi-user collaboration, and advanced backlog history are intentionally deferred. They are useful later, but not needed to prove the core idea in this MVP.</p>
+        </details>
+
+        <p style="margin-top: 24px; color: var(--muted);">
+          This PRD is intentionally small and proof-of-concept sized. It defines what the user experiences and how success is judged without drifting into architecture or implementation specifics.
+        </p>
+      </div>
+    </div>
+
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+    <noscript>
+      <div style="max-width:1100px; margin:24px auto; padding:0 18px; color:#1c2430;">
+        Diagram unavailable without JavaScript. The key product flow is still evident in the sections above: raw request → generate → story + Gherkin + dependencies + copy.
+      </div>
+    </noscript>
+  </body>
+</html>
