@@ -29,7 +29,7 @@ Build mode: [learn]
   Learner check: Paste a vague requirement, generate it, and check whether the result is structured enough to become a backlog item.
   Commit: `Generate structured agile output from Gemini`
 
-- [ ] **3. Review, error handling, and copy workflow**
+- [x] **3. Review, error handling, and copy workflow**
   Becomes usable: A user can review the final artifact, retry after a failure, and copy the Markdown output without losing context.
   Why now: This completes the demo-critical flow and ensures the app is resilient enough for the final review and a short hackathon demo.
   PRD ref: `prd.md > States and Boundaries`, `prd.md > API or generation failure`, `prd.md > Copy-ready output`

@@ -198,6 +198,13 @@ def render_story_result(result: dict[str, Any]) -> None:
     markdown_output = build_markdown_output(result)
     st.markdown(markdown_output)
 
+    st.download_button(
+        label="Descargar Markdown",
+        data=markdown_output,
+        file_name="historia-usuario.md",
+        mime="text/markdown",
+    )
+
     copy_html = f"""
     <div style="margin-top: 1rem; margin-bottom: 1rem;">
       <button id="copy-btn" style="padding: 0.6rem 1rem; border-radius: 0.5rem; border: 1px solid #e0e0e0; background: #f5f5f5; color: #111; cursor: pointer;">
