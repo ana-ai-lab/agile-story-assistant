@@ -133,6 +133,51 @@ def build_response_from_model(raw_text: str, raw_request: str, role: str) -> dic
     }
 
 
+def generate_content_with_model_fallback(prompt: str) -> Any:
+    primary_model_name = "gemini-1.5-flash"
+    primary_model = genai.GenerativeModel(primary_model_name)
+    generation_config = {
+        "temperature": 0.4,
+        "top_p": 0.9,
+        "max_output_tokens": 1200,
+    }
+
+    try:
+        return primary_model.generate_content(prompt, generation_config=generation_config)
+    except Exception as primary_error:
+        try:
+            available_models = genai.list_models()
+        except Exception as list_error:
+            raise RuntimeError(
+                f"Falló el modelo {primary_model_name}: {primary_error}. "
+                f"No se pudieron consultar modelos alternativos: {list_error}"
+            ) from list_error
+
+        tried_models = {primary_model_name, f"models/{primary_model_name}"}
+        model_errors = []
+        for available_model in available_models:
+            supported_methods = getattr(available_model, "supported_generation_methods", [])
+            model_name = getattr(available_model, "name", "")
+            if "generateContent" not in supported_methods or not model_name or model_name in tried_models:
+                continue
+
+            tried_models.add(model_name)
+            fallback_model = genai.GenerativeModel(model_name)
+            try:
+                return fallback_model.generate_content(prompt, generation_config=generation_config)
+            except Exception as fallback_error:
+                model_errors.append(f"{model_name}: {fallback_error}")
+
+        if model_errors:
+            fallback_error_details = "; ".join(model_errors)
+        else:
+            fallback_error_details = "No se encontraron modelos alternativos compatibles."
+        raise RuntimeError(
+            f"Falló el modelo {primary_model_name}: {primary_error}. "
+            f"También fallaron los modelos alternativos: {fallback_error_details}"
+        ) from primary_error
+
+
 def generate_story_result(raw_request: str, role: str) -> dict[str, Any]:
     if not raw_request.strip():
         raise ValueError("La solicitud no puede estar vacía.")
@@ -141,17 +186,9 @@ def generate_story_result(raw_request: str, role: str) -> dict[str, Any]:
         return build_demo_fallback(raw_request, role)
 
     try:
-        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
         prompt = build_prompt(raw_request, role)
-        response = model.generate_content(
-            prompt,
-            generation_config={
-                "temperature": 0.4,
-                "top_p": 0.9,
-                "max_output_tokens": 1200,
-            },
-        )
+        response = generate_content_with_model_fallback(prompt)
         text = getattr(response, "text", "") or str(response)
         return build_response_from_model(text, raw_request, role)
     except Exception as exc:  # pragma: no cover - runtime-only fallback

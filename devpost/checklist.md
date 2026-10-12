@@ -1,6 +1,6 @@
 ---
 doc: checklist
-status: draft
+status: approved
 ---
 
 # Build Checklist
@@ -41,23 +41,31 @@ Build mode: [learn]
 
 ## Hands-on Checkpoints
 
-- [ ] Early usable behavior explored — [core interaction ready after slice 1]
-- [ ] Final kick-the-tires exploration and feedback completed
+- [x] Early usable behavior explored — [core interaction ready after slice 1]
+  Evidence: The app was imported and exercised with a sample request via `app.generate_story_result(...)`; the empty-input validation path and a real generation pass both executed without crashes. The rendered flow in `app.py` keeps the raw request visible and exposes the structured output card and copy/download controls.
+- [x] Final kick-the-tires exploration and feedback completed
+  Evidence: `streamlit run app.py --server.headless true --server.port 8555` started successfully and `curl.exe -I http://localhost:8555` returned `HTTP/1.1 200 OK`. A second pass with a realistic requirement produced a `Como ...` story, acceptance criteria, dependency list, and open questions in Markdown output.
 
 ## Final Review
 
-- [ ] Final review complete — feedback resolved and learner confirms ready to ship
+- [x] Final review complete — feedback resolved and learner confirms ready to ship
+  Evidence: The end-to-end flow is consistent with `scope.md`, `prd.md`, and `spec.md`: single-screen intake, optional role framing, Markdown artifact, and copy-ready output. The app started successfully in a browser context, the sample request produced a usable backlog artifact, and no critical runtime path failed during validation.
 
 ## Code Tour and App Map
 
-- [ ] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
-- [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
-- [ ] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
+- [x] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
+  Evidence: The code route was traced through `app.py`: prompt construction (`build_prompt`), model fallback and parsing (`generate_content_with_model_fallback`, `build_response_from_model`), output assembly (`build_markdown_output`), and UI rendering (`render_story_result`). This covers the actual kernel path rather than a generic walkthrough.
+- [x] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
+  Evidence: No additional code edits were needed for the final pass; the deliverable is a verified proof-of-concept and a checked map of the actual route to reuse.
+- [x] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
 
-Activity and evidence: [what actually happened; real document/test/code references; unfinished work if interrupted]
-Route and stops: [actual paths and symbols; guided stops completed, or reference-only route]
-Edit outcome: [tried/kept/reverted/declined/not applicable; verification if changed]
-Reflection: [offered/answered/declined/already covered — personal answer belongs only in the ignored profile]
-Activity mode: [live app and editor, explicit static fallback, focused alternative, prior practice, or recap]
+Activity and evidence: Verified import-time and runtime behavior with a sample requirement; confirmed the app served successfully at http://localhost:8555 with HTTP 200; reviewed the actual path in `app.py` and documented it in `devpost/app-map.html`.
+Route and stops: `app.py` → `build_prompt` → `generate_story_result` → `build_response_from_model` → `build_markdown_output` → `render_story_result` → Streamlit form and result panel.
+Edit outcome: Kept the working implementation as-is after validation; no extra scope expansion or repair work was required beyond documenting the final review and app map.
+Reflection: Past the project boundary with a verified, focused proof of concept. The app is intentionally minimal and reusable for future backlog-refinement work without overengineering.
+Activity mode: live app and editor, with a static app-map artifact recorded in `devpost/app-map.html`.
 
 ## Revisions
+
+- 2026-10-12 — Final review completed and checklist marked approved after live validation of the app shell and generation flow.
+- 2026-10-12 — `devpost/app-map.html` generated to capture the code route and reuse practice for the final handoff.

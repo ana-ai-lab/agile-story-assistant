@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Story & Acceptance Criteria Assistant — App Map</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 2rem auto;
+        max-width: 1100px;
+        color: #1f2937;
+        background: #f8fafc;
+      }
+      .card {
+        background: #ffffff;
+        border: 1px solid #dbe4ee;
+        border-radius: 12px;
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+      }
+      h1, h2, h3 {
+        color: #0f172a;
+      }
+      .route {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+      }
+      .step {
+        border: 1px solid #dbeafe;
+        border-radius: 10px;
+        padding: 1rem;
+        background: #f8fbff;
+      }
+      code {
+        background: #eef2ff;
+        border-radius: 6px;
+        padding: 0.2rem 0.35rem;
+        font-size: 0.95em;
+      }
+      ul {
+        padding-left: 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>User Story & Acceptance Criteria Assistant</h1>
+      <p><strong>Project goal:</strong> turn a rough business requirement into a backlog-ready story, clear Gherkin acceptance criteria, and dependency/open-question output.</p>
+    </div>
+
+    <div class="card">
+      <h2>Code route</h2>
+      <div class="route">
+        <div class="step">
+          <h3>1. Intake</h3>
+          <p><code>app.py</code> defines the Streamlit form and optional role selector.</p>
+          <ul>
+            <li><code>ROLES</code></li>
+            <li><code>st.text_area(...)</code></li>
+            <li><code>st.selectbox(...)</code></li>
+          </ul>
+        </div>
+
+        <div class="step">
+          <h3>2. Prompt construction</h3>
+          <p><code>build_prompt(raw_request, role)</code> transforms the input into a strict agile-analysis prompt.</p>
+          <ul>
+            <li>Story format: <code>Como [rol], quiero [acción], para [beneficio]</code></li>
+            <li>Gherkin acceptance criteria</li>
+            <li>Technical dependencies and open questions</li>
+          </ul>
+        </div>
+
+        <div class="step">
+          <h3>3. Generation and fallback</h3>
+          <p><code>generate_story_result(raw_request, role)</code> checks validation, then calls Gemini or falls back safely.</p>
+          <ul>
+            <li><code>build_demo_fallback(...)</code> for no API key</li>
+            <li><code>generate_content_with_model_fallback(...)</code> for model retry logic</li>
+            <li><code>build_response_from_model(...)</code> normalizes output</li>
+          </ul>
+        </div>
+
+        <div class="step">
+          <h3>4. Output formatting</h3>
+          <p><code>build_markdown_output(result)</code> turns the result into copy-ready Markdown.</p>
+          <ul>
+            <li>Historia de usuario</li>
+            <li>Criterios de aceptación</li>
+            <li>Dependencias técnicas</li>
+            <li>Preguntas abiertas</li>
+          </ul>
+        </div>
+
+        <div class="step">
+          <h3>5. UI rendering</h3>
+          <p><code>render_story_result(result)</code> shows the request, output card, and copy/download controls.</p>
+          <ul>
+            <li>Download as Markdown</li>
+            <li>Buttons for copy-to-clipboard</li>
+            <li>Validation and error states</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Key files</h2>
+      <ul>
+        <li><code>app.py</code> — complete app logic and UI</li>
+        <li><code>requirements.txt</code> — Streamlit + dotenv + Gemini SDK</li>
+        <li><code>devpost/checklist.md</code> — build status and final review record</li>
+        <li><code>devpost/spec.md</code> — technical product specification</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Reusable practice</h2>
+      <p>Use one realistic business sentence as a test harness before anything else:</p>
+      <p><em>"Solo los administradores pueden descargar reportes de ventas"</em></p>
+      <p>Then verify the app produces three things in a single pass:</p>
+      <ol>
+        <li>a user story in the expected format,</li>
+        <li>at least one Gherkin scenario, and</li>
+        <li>a dependency/open-question section that flags ambiguity.</li>
+      </ol>
+      <p>This keeps the kernel honest and prevents the app from drifting into generic AI writing without business discipline.</p>
+    </div>
+  </body>
+</html>
