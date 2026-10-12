@@ -9,7 +9,7 @@ Build mode: [learn]
 
 ## Slices
 
-- [ ] **1. App shell and request flow**
+- [x] **1. App shell and request flow**
   Becomes usable: A single-screen app accepts a raw business request, keeps it visible, and shows a ready-for-generation empty-state or generated result without crashing.
   Why now: This proves the core interaction path and UI structure before we add the AI call, so the first usable behavior is real and testable.
   PRD ref: `prd.md > The Core Journey`, `prd.md > Request intake and role framing`, `prd.md > Copy-ready output`
@@ -19,7 +19,7 @@ Build mode: [learn]
   Learner check: Open the app and try entering a rough requirement; confirm that the form is clear, the role selector is optional, and the app does not silently fail on empty input.
   Commit: `Create single-screen story generator UI`
 
-- [ ] **2. Gemini generation and structured markdown output**
+- [x] **2. Gemini generation and structured markdown output**
   Becomes usable: The app sends the request to Gemini and renders a user story, Gherkin acceptance criteria, and technical dependencies/questions in a copy-ready Markdown block.
   Why now: The unique kernel is the structured transformation itself, so this is the earliest slice that proves the actual value of the product.
   PRD ref: `prd.md > Story generation`, `prd.md > Acceptance criteria generation`, `prd.md > Dependency and question detection`, `prd.md > Copy-ready output`
